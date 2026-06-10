@@ -23,7 +23,7 @@ const conceptsOpen = ref(false)
           Comment ça marche
         </button>
         <button class="chip" @click="viewportRef?.downloadScreenshot()">
-          Capture PNG
+          Exporter l'image
         </button>
       </div>
     </main>

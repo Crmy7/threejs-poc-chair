@@ -29,7 +29,7 @@ const current = computed(() => props.options.find(o => o.id === props.modelValue
     <p v-if="current" class="caption">
       <span class="name">{{ current.label }}</span>
       <span v-if="current.hint" class="hint"> — {{ current.hint }}</span>
-      <span class="price mono">{{ current.price > 0 ? `+${current.price}.– CHF` : 'inclus' }}</span>
+      <span class="price">{{ current.price > 0 ? `+ ${current.price} CHF` : 'Inclus' }}</span>
     </p>
   </div>
 </template>

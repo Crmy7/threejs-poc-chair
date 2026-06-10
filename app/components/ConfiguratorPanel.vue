@@ -31,29 +31,28 @@ function shareLink() {
 <template>
   <aside class="panel">
     <header class="panel-header">
-      <p class="ref mono">SC-04 · Édition 2026</p>
       <h1>Fauteuil lounge</h1>
-      <p class="subtitle">Velours, noyer massif et piètement métal, assemblés en Suisse.</p>
+      <p class="subtitle">Velours, noyer massif et piètement métal.</p>
     </header>
 
     <div class="sections">
       <section :ref="sectionRefs.fabric" :class="{ highlighted: state.selectedPart === 'fabric' }">
-        <h2><span class="idx mono">01</span> Revêtement</h2>
+        <h2>Revêtement</h2>
         <SwatchGrid v-model="state.fabric" :options="FABRICS" />
       </section>
 
       <section :ref="sectionRefs.wood" :class="{ highlighted: state.selectedPart === 'wood' }">
-        <h2><span class="idx mono">02</span> Structure bois</h2>
+        <h2>Structure bois</h2>
         <SwatchGrid v-model="state.wood" :options="WOODS" />
       </section>
 
       <section :ref="sectionRefs.metal" :class="{ highlighted: state.selectedPart === 'metal' }">
-        <h2><span class="idx mono">03</span> Piètement</h2>
+        <h2>Piètement</h2>
         <SwatchGrid v-model="state.metal" :options="METALS" />
       </section>
 
       <section>
-        <h2><span class="idx mono">04</span> Mise en scène</h2>
+        <h2>Ambiance</h2>
         <div class="env-tabs" role="radiogroup">
           <button
             v-for="env in ENVIRONMENTS"
@@ -75,11 +74,8 @@ function shareLink() {
 
     <footer class="panel-footer">
       <div class="price-row">
-        <div class="price-meta">
-          <span>Prix total</span>
-          <span class="lead mono">Livraison 4 à 6 semaines</span>
-        </div>
-        <strong class="mono">{{ totalPrice.toLocaleString('fr-CH') }}.&ndash; CHF</strong>
+        <span class="price-label">Total</span>
+        <strong>{{ totalPrice.toLocaleString('fr-CH') }} CHF</strong>
       </div>
       <button class="btn primary">Ajouter au panier</button>
       <div class="actions">
@@ -102,40 +98,32 @@ function shareLink() {
 }
 
 .panel-header {
-  padding: 1.5rem 1.6rem 1.3rem;
+  padding: 1.6rem 1.7rem 1.4rem;
   border-bottom: 1px solid var(--line);
-}
-
-.ref {
-  margin: 0 0 0.6rem;
-  font-size: 0.7rem;
-  color: var(--text-dim);
 }
 
 h1 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 600;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
-  margin: 0.4rem 0 0;
-  max-width: 26ch;
-  font-size: 0.82rem;
-  line-height: 1.45;
+  margin: 0.35rem 0 0;
+  font-size: 0.88rem;
   color: var(--text-dim);
 }
 
 .sections {
   flex: 1;
   overflow-y: auto;
-  padding: 0.3rem 1.6rem 1rem;
+  padding: 0.4rem 1.7rem 1rem;
 }
 
 section {
-  padding: 1.25rem 0.6rem;
-  margin: 0 -0.6rem;
+  padding: 1.4rem 0.7rem;
+  margin: 0 -0.7rem;
   border-bottom: 1px solid var(--line);
   transition: background 0.3s, box-shadow 0.3s;
 }
@@ -145,45 +133,37 @@ section:last-child {
 }
 
 section.highlighted {
-  background: #f6f4ee;
+  background: #f7f5f0;
   box-shadow: inset 2px 0 0 var(--accent);
 }
 
 h2 {
-  display: flex;
-  align-items: baseline;
-  gap: 0.55rem;
-  margin: 0 0 0.85rem;
-  font-size: 0.95rem;
+  margin: 0 0 0.95rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
-.idx {
-  font-size: 0.7rem;
-  font-weight: 400;
-  color: var(--text-dim);
-}
-
 .env-tabs {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .env-tabs button {
   flex: 1;
-  padding: 0.5rem 0;
+  padding: 0.55rem 0;
   border: 1px solid var(--line);
-  border-radius: 0.4rem;
+  border-radius: 8px;
   background: var(--surface);
   color: var(--text-dim);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .env-tabs button:hover {
-  border-color: #cfcabd;
+  border-color: #d4cfc4;
+  color: var(--text);
 }
 
 .env-tabs button.active {
@@ -195,57 +175,50 @@ h2 {
 .toggle {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
-  margin-top: 1rem;
-  font-size: 0.82rem;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+  font-size: 0.88rem;
   color: var(--text-dim);
   cursor: pointer;
 }
 
 .toggle input {
   accent-color: var(--accent);
+  width: 0.95rem;
+  height: 0.95rem;
 }
 
 .panel-footer {
-  padding: 1.2rem 1.6rem 1.4rem;
+  padding: 1.3rem 1.7rem 1.5rem;
   border-top: 1px solid var(--line);
 }
 
 .price-row {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 1rem;
+  align-items: baseline;
+  margin-bottom: 1.1rem;
 }
 
-.price-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  font-size: 0.82rem;
-  color: var(--text);
-}
-
-.price-meta .lead {
-  font-size: 0.68rem;
+.price-label {
+  font-size: 0.9rem;
   color: var(--text-dim);
 }
 
 .price-row strong {
-  font-size: 1.2rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .btn {
   width: 100%;
-  padding: 0.8rem 1rem;
-  border-radius: 0.45rem;
+  padding: 0.85rem 1rem;
+  border-radius: 9px;
   border: 1px solid var(--line);
   background: var(--surface);
   color: var(--text);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s, opacity 0.15s;
@@ -258,22 +231,22 @@ h2 {
 }
 
 .btn.primary:hover {
-  opacity: 0.86;
+  opacity: 0.88;
 }
 
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.4rem;
-  margin-top: 0.5rem;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
 }
 
 .btn.ghost {
   border: none;
   background: none;
   color: var(--text-dim);
-  font-size: 0.78rem;
-  padding: 0.5rem 0.4rem;
+  font-size: 0.83rem;
+  padding: 0.55rem 0.4rem;
 }
 
 .btn.ghost:hover {

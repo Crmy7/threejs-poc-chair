@@ -224,10 +224,79 @@ export class ConfiguratorEngine {
     if (!part) return
   }
 
-  /** Rend une frame puis capture le canvas en PNG. */
+  /**
+   * Capture « planche produit » : une seule image PNG composée de
+   * plusieurs points de vue (bento) — grande vue 3/4 + profil, dos
+   * et gros plan matière.
+   *
+   * Technique : on rend la scène hors écran une fois par cadrage
+   * (le renderer est redimensionné à la taille de chaque case), puis
+   * chaque rendu est recopié dans un canvas 2D de composition via
+   * drawImage. L'état caméra/renderer est restauré à la fin — la
+   * boucle d'animation reprend comme si de rien n'était.
+   */
   screenshot(): string {
-    this.renderer.render(this.scene, this.camera)
-    return this.canvas.toDataURL('image/png')
+    // Rendu supersamplé ×2 : la planche exportée fait 3840×2560
+    const SCALE = 2
+    const W = 1920
+    const H = 1280
+    const GAP = 14
+    const heroW = 1240
+    const colX = heroW + GAP
+    const colW = W - colX
+    const cellH = Math.floor((H - 2 * GAP) / 3)
+    const look = new THREE.Vector3(0, 0.32, 0)
+
+    const views = [
+      // Grande case : vue 3/4 avant
+      { x: 0, y: 0, w: heroW, h: H, pos: new THREE.Vector3(1.2, 0.72, 1.4), look },
+      // Colonne droite : profil, dos 3/4, gros plan velours
+      { x: colX, y: 0, w: colW, h: cellH, pos: new THREE.Vector3(1.35, 0.42, 0.05), look },
+      { x: colX, y: cellH + GAP, w: colW, h: cellH, pos: new THREE.Vector3(-1.15, 0.7, -1.25), look },
+      {
+        x: colX,
+        y: 2 * (cellH + GAP),
+        w: colW,
+        h: H - 2 * (cellH + GAP),
+        pos: new THREE.Vector3(0.5, 0.52, 0.62),
+        look: new THREE.Vector3(0, 0.3, 0.05),
+      },
+    ]
+
+    const composite = document.createElement('canvas')
+    composite.width = W * SCALE
+    composite.height = H * SCALE
+    const ctx = composite.getContext('2d')!
+    ctx.fillStyle = '#ffffff'
+    ctx.fillRect(0, 0, composite.width, composite.height)
+
+    // État à restaurer après les rendus hors écran
+    const prevPosition = this.camera.position.clone()
+    const prevQuaternion = this.camera.quaternion.clone()
+    const prevAspect = this.camera.aspect
+    const prevPixelRatio = this.renderer.getPixelRatio()
+    const prevSize = new THREE.Vector2()
+    this.renderer.getSize(prevSize)
+
+    this.renderer.setPixelRatio(1) // dimensions exactes par case
+    for (const v of views) {
+      this.renderer.setSize(v.w * SCALE, v.h * SCALE, false)
+      this.camera.aspect = v.w / v.h
+      this.camera.updateProjectionMatrix()
+      this.camera.position.copy(v.pos)
+      this.camera.lookAt(v.look)
+      this.renderer.render(this.scene, this.camera)
+      ctx.drawImage(this.canvas, v.x * SCALE, v.y * SCALE, v.w * SCALE, v.h * SCALE)
+    }
+
+    this.renderer.setPixelRatio(prevPixelRatio)
+    this.renderer.setSize(prevSize.x, prevSize.y, false)
+    this.camera.aspect = prevAspect
+    this.camera.position.copy(prevPosition)
+    this.camera.quaternion.copy(prevQuaternion)
+    this.camera.updateProjectionMatrix()
+
+    return composite.toDataURL('image/png')
   }
 
   dispose() {

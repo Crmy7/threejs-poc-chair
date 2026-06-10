@@ -125,7 +125,9 @@ Pourquoi cette séparation ?
   bonne section du panneau (raycasting + `userData`)
 - **Transitions douces** : fond et exposition interpolés dans la boucle
 - **Partage par URL** : config sérialisée en base64 dans le hash
-- **Export PNG** : capture du canvas (`toDataURL`)
+- **Export PNG multi-vues** : une planche « bento » (vue 3/4, profil, dos,
+  gros plan matière) composée en rendant la scène hors écran sous 4 cadrages,
+  assemblés dans un canvas 2D (`drawImage` + `toDataURL`)
 - **Perfs** : pixel ratio borné à 2, une seule lumière à ombre, `dispose()`
 
 ## Aller plus loin

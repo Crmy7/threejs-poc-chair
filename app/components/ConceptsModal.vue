@@ -200,9 +200,8 @@ header p {
 .file {
   display: inline-block;
   margin-top: 0.4rem;
-  font-size: 0.68rem;
-  color: rgb(0 0 0 / 0.35);
-  font-family: ui-monospace, monospace;
+  font-size: 0.72rem;
+  color: var(--text-dim);
 }
 
 .modal-enter-active,

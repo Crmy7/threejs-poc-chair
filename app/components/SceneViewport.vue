@@ -51,7 +51,7 @@ watch(() => state.value.selectedPart, p => engine?.setHighlight(p))
 function downloadScreenshot() {
   if (!engine) return
   const link = document.createElement('a')
-  link.download = 'fauteuil-config.png'
+  link.download = 'fauteuil-lounge.png'
   link.href = engine.screenshot()
   link.click()
 }
@@ -78,7 +78,7 @@ defineExpose({ downloadScreenshot })
       </div>
     </Transition>
 
-    <p class="hint mono">Glisser&nbsp;: pivoter · Molette&nbsp;: zoomer · Clic&nbsp;: sélectionner une pièce</p>
+    <p class="hint">Glissez pour pivoter · molette pour zoomer · cliquez une pièce pour la modifier</p>
   </div>
 </template>
 
